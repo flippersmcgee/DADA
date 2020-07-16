@@ -60,19 +60,17 @@ class ResNetMultiDepth(ResNetMulti):
         b = []
         if self.multi_level:
             b.append(self.layer5.parameters())
-        b.append(self.layer6.parameters())    
+        b.append(self.layer6.parameters())
         b.append(self.enc4_1.parameters())
         b.append(self.enc4_2.parameters())
         b.append(self.enc4_3.parameters())
         b.append(self.dec4.parameters())
 
-        for j in range(len(b)):
-            for i in b[j]:
-                yield i
+        for item in b:
+            yield from item
 
 
 def get_deeplab_v2_depth(num_classes=16, multi_level=False):
-    model = ResNetMultiDepth(
+    return ResNetMultiDepth(
         Bottleneck, [3, 4, 23, 3], num_classes, multi_level
     )
-    return model
